@@ -7,6 +7,7 @@ package Agentes.Monstros;
 
 import jade.core.*;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 
 /**
@@ -22,21 +23,12 @@ public class Monstro_Grande extends Agent {
     int velocidade = 1;
 
     protected void setup() {
-        addBehaviour(new CyclicBehaviour(this) {
+        addBehaviour(new TickerBehaviour(this, 1000) {
 
-            @Override
-            public void action() {
-                ACLMessage msga = myAgent.receive();
-                if (msga != null) {
-                    String content = msga.getContent();
-                    vida -= Integer.getInteger(content);
-                    if (vida <= 0) {
-                       doDelete();
-                    }
-                }
-
+            protected void onTick() {
                 if (posX < 30) {
                     posX += velocidade;
+                    System.out.println(myAgent.getLocalName()+" Posição: "+posX);
 
                 } else {
                     ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
@@ -45,7 +37,26 @@ public class Monstro_Grande extends Agent {
                     msg.setOntology("Ataque");
                     msg.setContent(String.valueOf(ataque));
                     myAgent.send(msg);
+                    System.out.println("Morri" + msg.toString());
+                    doDelete();
                 }
+            }
+        });
+
+        addBehaviour(new CyclicBehaviour(this) {
+
+            @Override
+            public void action() {
+                ACLMessage msga = myAgent.receive();
+                if (msga != null) {
+                    System.out.println("Entrei não sei porque" + msga.toString());
+                    String content = msga.getContent();
+                    vida -= Integer.getInteger(content);
+                    if (vida <= 0) {
+                        doDelete();
+                    }
+                }
+                block();
             }
         });
 
