@@ -1,5 +1,5 @@
 
-package MAS.core;
+package Interface;
 
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -11,13 +11,17 @@ public class ContainerManager
 {
     
     private static ContainerManager instance = null;
-    private ContainerController[] containerController = new ContainerController[6];
+    private final ContainerController[] containerController = new ContainerController[6];
     
     public ContainerManager()
     {
         init();
     }
     
+    /**
+     *
+     * @return
+     */
     public static ContainerManager getInstance()
     {
         if (null == instance)
@@ -71,5 +75,5 @@ public class ContainerManager
     {
         return instantiateAgent(name, className, new Object[0], (int)(Math.random()*100)%5+1);
     }
-    
+      
 }

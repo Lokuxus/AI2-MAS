@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Agentes.Monstros;
 
 import jade.core.*;
@@ -17,18 +12,18 @@ import jade.lang.acl.ACLMessage;
 public class Monstro_Pequeno extends Agent {
 
     int posX = 0;
-    int posY = (int) ((Math.random() * 100) % 5);
     int vida = 5;
     int ataque = 1;
-    int velocidade = 5;
+    int velocidade = 3;
 
+    @Override
     protected void setup() {
         addBehaviour(new TickerBehaviour(this, 1000) {
 
+            @Override
             protected void onTick() {
                 if (posX < 30) {
                     posX += velocidade;
-                    System.out.println(myAgent.getLocalName() + " Posição: " + posX);
 
                 } else {
                     ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
@@ -37,7 +32,6 @@ public class Monstro_Pequeno extends Agent {
                     msg.setOntology("Ataque");
                     msg.setContent(String.valueOf(ataque));
                     myAgent.send(msg);
-                    System.out.println("Morri");
                     doDelete();
                 }
             }
@@ -48,13 +42,26 @@ public class Monstro_Pequeno extends Agent {
             @Override
             public void action() {
                 ACLMessage msga = myAgent.receive();
-                if (msga != null) {
-                    System.out.println("Entrei não sei porque" + msga.toString());
+                if (msga != null && msga.getOntology().equalsIgnoreCase("Ataque")) {
                     String content = msga.getContent();
-                    vida -= Integer.getInteger(content);
+                    vida -= Integer.parseInt(content);
                     if (vida <= 0) {
                         doDelete();
                     }
+                }
+                block();
+            }
+        });
+        addBehaviour(new CyclicBehaviour(this) {
+
+            @Override
+            public void action() {
+                ACLMessage msga = myAgent.receive();
+                if (msga != null && msga.getOntology().equalsIgnoreCase("posX")) {
+                    ACLMessage reply = msga.createReply();
+                    reply.setPerformative(ACLMessage.INFORM);
+                    reply.setContent(String.valueOf(posX));
+                    myAgent.send(reply);
                 }
                 block();
             }
