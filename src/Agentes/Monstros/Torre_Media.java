@@ -5,8 +5,6 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.wrapper.AgentContainer;
-import jade.wrapper.ControllerException;
 
 /**
  *
@@ -16,7 +14,7 @@ public class Torre_Media extends Agent {
 
     AID primeiro = null;
     int posPrimeiro = 0;
-    int ataque = 1;
+    int ataque = 2;
 
     @Override
     protected void setup() {

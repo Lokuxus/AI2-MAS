@@ -4,6 +4,9 @@ import jade.core.*;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.wrapper.ControllerException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,7 +28,11 @@ public class Monstro_Grande extends Agent {
                 if (posX < 30) {
                     posX += velocidade;
                     ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                    msg.addReceiver(new AID("Torre_Media", AID.ISLOCALNAME));
+                    try {
+                        msg.addReceiver(new AID("Torre_Media" + getContainerController().getContainerName(), AID.ISLOCALNAME));
+                    } catch (ControllerException ex) {
+                        Logger.getLogger(Monstro_Grande.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     msg.setLanguage("Português");
                     msg.setOntology("posX");
                     msg.setContent(String.valueOf(posX));
