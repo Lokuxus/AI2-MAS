@@ -20,7 +20,7 @@ public class Torre_Media extends Agent {
 
     @Override
     protected void setup() {
-        addBehaviour(new TickerBehaviour(this, 750) {
+        addBehaviour(new TickerBehaviour(this, 250) {
 
             @Override
             protected void onTick() {
@@ -49,6 +49,20 @@ public class Torre_Media extends Agent {
                 block();
             }
         });
+
+        addBehaviour(new CyclicBehaviour(this) {
+
+            @Override
+            public void action() {
+                ACLMessage msga = myAgent.receive();
+                if (msga != null && msga.getOntology().equalsIgnoreCase("Morri")) {
+                    posPrimeiro = 0;
+                    primeiro = null;
+                }
+                block();
+            }
+        });
+        /*
         addBehaviour(new TickerBehaviour(this, 100) {
 
             @Override
@@ -72,7 +86,7 @@ public class Torre_Media extends Agent {
                 myAgent.send(msg);
             }
         });
-
+         */
     }
 
 }

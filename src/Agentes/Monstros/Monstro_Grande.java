@@ -24,6 +24,12 @@ public class Monstro_Grande extends Agent {
             protected void onTick() {
                 if (posX < 30) {
                     posX += velocidade;
+                    ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+                    msg.addReceiver(new AID("Torre_Media", AID.ISLOCALNAME));
+                    msg.setLanguage("Português");
+                    msg.setOntology("posX");
+                    msg.setContent(String.valueOf(posX));
+                    myAgent.send(msg);
 
                 } else {
                     ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
@@ -31,6 +37,11 @@ public class Monstro_Grande extends Agent {
                     msg.setLanguage("Português");
                     msg.setOntology("Ataque");
                     msg.setContent(String.valueOf(ataque));
+                    myAgent.send(msg);
+                    msg = new ACLMessage(ACLMessage.INFORM);
+                    msg.addReceiver(new AID("Torre_Media", AID.ISLOCALNAME));
+                    msg.setLanguage("Português");
+                    msg.setOntology("Morri");
                     myAgent.send(msg);
                     doDelete();
                 }
@@ -45,25 +56,15 @@ public class Monstro_Grande extends Agent {
                 if (msga != null && msga.getOntology().equalsIgnoreCase("Ataque")) {
                     String content = msga.getContent();
                     vida -= Integer.parseInt(content);
-                    System.out.println("Fui atacado" + vida);
+                    System.out.println(getName() + " Fui atacado: " + posX + " " + vida);
                     if (vida <= 0) {
+                        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+                        msg.addReceiver(new AID("Torre_Media", AID.ISLOCALNAME));
+                        msg.setLanguage("Português");
+                        msg.setOntology("Morri");
+                        myAgent.send(msg);
                         doDelete();
                     }
-                }
-                block();
-            }
-        });
-
-        addBehaviour(new CyclicBehaviour(this) {
-
-            @Override
-            public void action() {
-                ACLMessage msga = myAgent.receive();
-                if (msga != null && msga.getOntology().equalsIgnoreCase("posX")) {
-                    ACLMessage reply = msga.createReply();
-                    reply.setPerformative(ACLMessage.INFORM);
-                    reply.setContent(String.valueOf(posX));
-                    myAgent.send(reply);
                 }
                 block();
             }

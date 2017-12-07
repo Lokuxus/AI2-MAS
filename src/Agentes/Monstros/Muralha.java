@@ -35,6 +35,7 @@ public class Muralha extends Agent {
                 if (msga != null && msga.getOntology().equalsIgnoreCase("Ataque")) {
                     String content = msga.getContent();
                     vida -= Integer.parseInt(content);
+                    System.out.println("Vida: "+vida);
                     if (vida <= 0) {
                         System.out.println("Muralha morreu");
                         Codec codec = new SLCodec();
