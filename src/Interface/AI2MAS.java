@@ -1,19 +1,26 @@
 package Interface;
 
+import InterfaceGrafica.Board;
+import InterfaceGrafica.BoardGui;
 import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class AI2MAS {
+    
+    
+  
 
-    public static void main(String[] args) throws StaleProxyException, InterruptedException, ControllerException {
-        Object[] Agentargs = null;
-
-        ContainerManager.getInstance().instantiateAgent("Muralha", Agentes.Monstros.Muralha.class.getName(), 0);
+    public static void main(String[] args) throws StaleProxyException, InterruptedException, ControllerException, FileNotFoundException, IOException {
+        //Object[] Agentargs = null;
+         
+        ContainerManager.getInstance().instantiateAgent("Muralha", Agentes.Muralha.class.getName(), 0);
         for (int i = 1; i < 6; i++) {
-            ContainerManager.getInstance().instantiateAgent("Torre_Media" + ContainerManager.getInstance().getConatinername(i), Agentes.Monstros.Torre_Media.class.getName(), i);
+            ContainerManager.getInstance().instantiateAgent("Torre_Media" + ContainerManager.getInstance().getConatinername(i), Agentes.Torre_Media.class.getName(), i);
         }
-
-        ContainerManager.getInstance().instantiateAgent("Rei_Demonio", Agentes.Monstros.Rei_Demonio.class.getName(), 0);
+        ContainerManager.getInstance().instantiateAgent("Rei_Demonio", Agentes.Rei_Demonio.class.getName(), 0);
 
         //}
         /*

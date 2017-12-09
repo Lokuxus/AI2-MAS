@@ -1,4 +1,4 @@
-package Agentes.Monstros;
+package Agentes;
 
 import jade.core.*;
 import jade.core.behaviours.CyclicBehaviour;
@@ -12,12 +12,12 @@ import java.util.logging.Logger;
  *
  * @author lokux
  */
-public class Monstro_Grande extends Agent {
+public class Monstro_Medio extends Monster {
 
     int posX = 0;
-    int vida = 15;
-    int ataque = 5;
-    int velocidade = 1;
+    int vida = 10;
+    int ataque = 3;
+    int velocidade = 2;
 
     @Override
     protected void setup() {
@@ -31,13 +31,12 @@ public class Monstro_Grande extends Agent {
                     try {
                         msg.addReceiver(new AID("Torre_Media" + getContainerController().getContainerName(), AID.ISLOCALNAME));
                     } catch (ControllerException ex) {
-                        Logger.getLogger(Monstro_Grande.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(Monstro_Medio.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     msg.setLanguage("Português");
                     msg.setOntology("posX");
                     msg.setContent(String.valueOf(posX));
                     myAgent.send(msg);
-
                 } else {
                     ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                     msg.addReceiver(new AID("Muralha", AID.ISLOCALNAME));
@@ -46,7 +45,11 @@ public class Monstro_Grande extends Agent {
                     msg.setContent(String.valueOf(ataque));
                     myAgent.send(msg);
                     msg = new ACLMessage(ACLMessage.INFORM);
-                    msg.addReceiver(new AID("Torre_Media", AID.ISLOCALNAME));
+                    try {
+                        msg.addReceiver(new AID("Torre_Media" + getContainerController().getContainerName(), AID.ISLOCALNAME));
+                    } catch (ControllerException ex) {
+                        Logger.getLogger(Monstro_Medio.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     msg.setLanguage("Português");
                     msg.setOntology("Morri");
                     myAgent.send(msg);
@@ -65,8 +68,13 @@ public class Monstro_Grande extends Agent {
                     vida -= Integer.parseInt(content);
                     System.out.println(getName() + " Fui atacado: " + posX + " " + vida);
                     if (vida <= 0) {
+						System.out.println(getName()+" Morri");
                         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                        msg.addReceiver(new AID("Torre_Media", AID.ISLOCALNAME));
+                        try {
+                            msg.addReceiver(new AID("Torre_Media" + getContainerController().getContainerName(), AID.ISLOCALNAME));
+                        } catch (ControllerException ex) {
+                            Logger.getLogger(Monstro_Pequeno.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         msg.setLanguage("Português");
                         msg.setOntology("Morri");
                         myAgent.send(msg);

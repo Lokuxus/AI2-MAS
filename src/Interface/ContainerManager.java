@@ -1,14 +1,18 @@
 package Interface;
 
+import InterfaceGrafica.Board;
+import InterfaceGrafica.CellType;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
+import java.io.FileNotFoundException;
 
 public class ContainerManager {
 
+    private Inicial inicio = new Inicial();
     private static ContainerManager instance = null;
     private final ContainerController[] containerController = new ContainerController[6];
 
@@ -24,15 +28,20 @@ public class ContainerManager {
         if (null == instance) {
             instance = new ContainerManager();
         }
-
         return instance;
+    }
+    
+    public Board loadBoard(String filename) throws FileNotFoundException
+    {
+         Board board = new Board(getClass().getResource("/InterfaceGrafica/" + filename).getPath());  
+         return board;
     }
 
     private void init() {
         // Gets JADE runtime interface
         jade.core.Runtime runtime = jade.core.Runtime.instance();
         runtime.setCloseVM(true);
-
+        
         // Creates a profile
         Profile profile = new ProfileImpl(true);
         profile.setParameter(Profile.CONTAINER_NAME, "Tower Defense");
@@ -65,7 +74,10 @@ public class ContainerManager {
     }
 
     public AgentController instantiateAgentMonster(String name, String className) throws StaleProxyException {
-        return instantiateAgent(name, className, new Object[0], (int) (Math.random() * 100) % 5 + 1);
+        int t = (int) (Math.random() * 100) % 5 + 1;
+        inicio.board.board.board.get(0).get(0).setType(CellType.MONSTER);
+        inicio.board.board.previousBoard.get(0).get(0).setType(CellType.MONSTER);
+        return instantiateAgent(name, className, new Object[0], t);
     }
 
     public String getConatinername(int container) throws ControllerException {

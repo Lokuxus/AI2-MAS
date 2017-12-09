@@ -1,4 +1,4 @@
-package Agentes.Monstros;
+package Agentes;
 
 import Interface.ContainerManager;
 import jade.core.AID;
@@ -29,11 +29,11 @@ public class Rei_Demonio extends Agent {
                     try {
                         int porc = (int) ((Math.random() * 100) % 9);
                         if (porc < 3) {
-                            ContainerManager.getInstance().instantiateAgentMonster("Monstro" + i, Agentes.Monstros.Monstro_Grande.class.getName());
+                            ContainerManager.getInstance().instantiateAgentMonster("Monstro" + i, Agentes.Monstro_Grande.class.getName());
                         } else if (porc < 6) {
-                            ContainerManager.getInstance().instantiateAgentMonster("Monstro" + i, Agentes.Monstros.Monstro_Medio.class.getName());
+                            ContainerManager.getInstance().instantiateAgentMonster("Monstro" + i, Agentes.Monstro_Medio.class.getName());
                         } else {
-                            ContainerManager.getInstance().instantiateAgentMonster("Monstro" + i, Agentes.Monstros.Monstro_Pequeno.class.getName());
+                            ContainerManager.getInstance().instantiateAgentMonster("Monstro" + i, Agentes.Monstro_Pequeno.class.getName());
                         }
                     } catch (Exception e) {
                     }
